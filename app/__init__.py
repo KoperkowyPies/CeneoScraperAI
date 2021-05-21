@@ -1,10 +1,9 @@
-# import Flask class from flask package
+# import of Flask class from flask package
 from flask import Flask
-
 # definition of Flask object called app
 app = Flask(__name__)
 
-#import of routings (route module) from app package
+# import of routings (routes module) form app package
 from app import routes
 
 
