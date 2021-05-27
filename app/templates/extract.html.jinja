@@ -6,7 +6,7 @@
     {% if form.productId.errors %}
         <div class="alert alert-danger" role="alert">
             {% for error in form.productId.errors  %}
-                <p>{{ error }}</p>
+                <p><i class="bi bi-house-fill" style="font-size: 1.5rem; color:blue;"></i><{{ error }}></p>
             {% endfor %}
         </div>
     {% endif %}
