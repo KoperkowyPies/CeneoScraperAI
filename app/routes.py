@@ -1,8 +1,8 @@
+from flask import request, render_template, redirect, url_for
 from app import app
 from app.models.opinion import Opinion
 from app.models.product import Product
 from app.forms import ProductForm
-from flask import request, render_template, redirect, url_for
 from os import listdir
 import requests
 import json

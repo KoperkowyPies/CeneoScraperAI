@@ -16,10 +16,10 @@
     
     <nav class="container navbar navbar-expand-lg navbar-dark bg-dark sticky-top rounded">
         <div class="">
-            <a class="navbar-brand" href="./"> <i class="bi bi-house-fill" style="font-size: 1.5rem; color: whitesmoke;"></i> Home</a>
-            <a class="navbar-brand" href="./extract"> <i class="bi bi-cloud-arrow-down-fill" style="font-size: 1.5rem; color: whitesmoke;"></i> Extract</a>
-            <a class="navbar-brand" href="./products"> <i class="bi bi-list-stars" style="font-size: 1.5rem; color: whitesmoke;"></i> Products</a>
-            <a class="navbar-brand" href="./author"> <i class="bi bi-person-circle" style="font-size: 1.5rem; color: whitesmoke;"></i> Author</a>
+            <a class="navbar-brand" href="{{ url_for('index') }}"> <i class="bi bi-house-fill" style="font-size: 1.5rem; color: whitesmoke;"></i> Home</a>
+            <a class="navbar-brand" href="{{ url_for('extract') }}"> <i class="bi bi-cloud-arrow-down-fill" style="font-size: 1.5rem; color: whitesmoke;"></i> Extract</a>
+            <a class="navbar-brand" href="{{ url_for('products') }}"> <i class="bi bi-list-stars" style="font-size: 1.5rem; color: whitesmoke;"></i> Products</a>
+            <a class="navbar-brand" href="{{ url_for('author') }}"> <i class="bi bi-person-circle" style="font-size: 1.5rem; color: whitesmoke;"></i> Author</a>
         </div>
     </nav>
     <div class="container" style="padding-top: 50px; padding-bottom: 100px;">
