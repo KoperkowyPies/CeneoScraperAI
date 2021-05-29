@@ -3,7 +3,7 @@ from flask_wtf import FlaskForm
 
 class ProductForm(FlaskForm):
     productId = StringField(
-        'Enter product Id',
+        'Enter product ID',
         [
             validators.DataRequired(message = "Product Id must be given"),
             validators.Length(min=8, max=8, message= "Product Id must have 8 characters"),
