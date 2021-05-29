@@ -14,6 +14,6 @@
     <form method="POST" action="{{ url_for('extract') }}">
         {{ form.csrf_token }}
         {{ form.productId.label }} {{ form.productId(size=20) }}
-        {{ form.submit(class_="btn btn-info")}}
+        {{ form.submit(class_="btn btn-outline-primary")}}
     </form>
 {% endblock middle %}
