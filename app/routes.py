@@ -32,7 +32,7 @@ def extract():
 def product(productId):
     product = Product(productId)
     opinions = product.importProduct().opinionsToDataFrame()
-    return render_template('product.html.jinja', tables=[opinions.to_html(classes='table table-striped table-sm table-responsive', table_id="opinions")])
+    return render_template('product.html.jinja', tables=[opinions.to_html(classes='table table-dark table-striped table-sm table-responsive', table_id="opinions")])
 
 @app.route('/products')
 def products():
