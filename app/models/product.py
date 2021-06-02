@@ -3,6 +3,7 @@ from app.utils import extractElement
 from app.models.opinion import Opinion
 import requests
 import json
+import pandas as pd
 from bs4 import BeautifulSoup
 
 class Product:
@@ -36,6 +37,15 @@ class Product:
         with open("app/opinions/{}.json".format(self.productId), "w", encoding="UTF-8") as jf:
             json.dump(self.todict(), jf, indent=4, ensure_ascii=False)
 
+    def importProduct(self):
+        with open("app/opinions/{}.json".format(self.productId), "r", encoding="UTF-8") as jf:
+            product = json.load(jf)
+            self.name = product['name']
+            opinions = product['opinions']
+            for opinion in opinions:
+                self.opinions.append(Opinion(**opinion))
+        return self
+
     def __str__(self):
         return '''productId: {}<br>
         name: {}<br>'''.format(self.productId, self.name)+"<br>".join(str(opinion) for opinion in self.opinions)
@@ -46,4 +56,10 @@ class Product:
             "name": self.name,
             "opinions": [opinion.todict() for opinion in self.opinions]
         }
+
+    def opinionsToDataFrame(self):
+        opinions = pd.DataFrame.from_records(
+            [opinion.todict() for opinion in self.opinions])
+        # opinions = pd.json_normalize([opinion.toDict() for opinion in self.opinions])
+        return opinions
 
