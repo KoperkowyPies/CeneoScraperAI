@@ -4,6 +4,7 @@ from app.models.opinion import Opinion
 from app.models.product import Product
 from app.forms import ProductForm
 from os import listdir
+import pandas as pd
 import requests
 import json
 
@@ -19,9 +20,9 @@ def extract():
     form = ProductForm()
     if request.method == 'POST' and form.validate_on_submit():
         product = Product(request.form['productId'])
-        respons = requests.get(product.opinionsPageUrl())
-        if respons.status_code == 200:
+        if (product.extractName()):
             product.extractProduct()
+            product.countDooku()
             product.exportProduct()
             return redirect(url_for('product', productId=product.productId))
         else:
@@ -37,8 +38,13 @@ def product(productId):
 @app.route('/products')
 def products():
     productsList = [x.split(".")[0] for x in listdir("app/opinions")]
-    return render_template('products.html.jinja', productsList=productsList)
+    productsTodict = []
+    for product in productsList:
+        with open("app/products/{}.json".format(product), "r", encoding="UTF-8") as jf:
+            productsTodict = json.load(jf)
+    products = pd.json_normalize(productsTodict)
+    return render_template('products.html.jinja', products=productsTodict)
 
 @app.route('/author')
 def author():
-    pass
+    return render_template('author.html.jinja')

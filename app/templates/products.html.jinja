@@ -3,8 +3,14 @@
 {% block middle %}
     <h2> Products </h2>
     <ul class="list-group list-group-flush">
-    {% for product in productsList %}
-        <li class="list-group-item"><a href="{{url_for('product', productId=product)}}">{{product}}</a></li>
+    {% for product in products %}
+        <li class="list-group-item">
+            <a href="{{url_for('product', productId=product['productId'])}}">{{product['name']}}</a>
+            <span class="badge-pill bg-info badge-secondary">{{product['opinionsCount']}}</span>
+            <span class="badge badge-pill badge-dark">{{product['average score']}}</span>
+            <span class="badge badge-pill badge-success">{{product['prosCount']}}</span>
+            <span class="badge badge-pill badge-info">{{product['consCount']}}</span>
+        </li>
     {% endfor %}
     </ul>
 {% endblock middle %}

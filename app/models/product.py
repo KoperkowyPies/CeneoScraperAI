@@ -11,13 +11,24 @@ class Product:
     url_pre = 'https://www.ceneo.pl'
     url_post = '#tab=reviews'
 
-    def __init__(self, productId=None, name=None, opinions=[]):
+    def __init__(self, productId=None, name=None, opinions=[], averageScore=None, opinionsCount=None, prosCount=None, consCount=None):
         self.productId = productId
         self.name = name
-        self.opinions = opinions
+        self.opinions = opinions.copy()
+        self.averageScore =  averageScore
+        self.opinionsCount = opinionsCount
+        self.prosCount = prosCount
+        self.consCount = consCount
 
     def opinionsPageUrl(self):
         return self.url_pre+'/'+self.productId+self.url_post
+
+    def extractName(self):
+        respons = requests.get(self.opinionsPageUrl())
+        if respons.status_code == 200:
+            pageDOM = BeautifulSoup(respons.text, 'html.parser')
+            self.name = extractElement(pageDOM, 'h1.product-top__product-info__name')
+        return self.name
     
     def extractProduct(self):
         url = self.opinionsPageUrl()
@@ -32,16 +43,26 @@ class Product:
             except TypeError:
                 url = None
 
+    def countDooku(self):
+        #countProductStatistics
+        opinions = self.opinionsToDataFrame()
+        self.averageScore = float(opinions['stars'].mean())
+        self.opinionsCount = len(self.opinions)
+        self.prosCount = int(opinions['advantages'].count())
+        self.consCount = int(opinions['disadvantages'].count())
 
     def exportProduct(self):
+        with open("app/products/{}.json".format(self.productId), "w", encoding="UTF-8") as jf:
+            json.dump(self.productsTodict(), jf, indent=4, ensure_ascii=False)
         with open("app/opinions/{}.json".format(self.productId), "w", encoding="UTF-8") as jf:
-            json.dump(self.todict(), jf, indent=4, ensure_ascii=False)
+            json.dump(self.opinionsTodictList(), jf, indent=4, ensure_ascii=False)
 
     def importProduct(self):
-        with open("app/opinions/{}.json".format(self.productId), "r", encoding="UTF-8") as jf:
+        with open("app/products/{}.json".format(self.productId), "r", encoding="UTF-8") as jf:
             product = json.load(jf)
-            self.name = product['name']
-            opinions = product['opinions']
+            self.__init__(**product)
+        with open("app/opinions/{}.json".format(self.productId), "r", encoding="UTF-8") as jf:
+            opinions = json.load(jf)
             for opinion in opinions:
                 self.opinions.append(Opinion(**opinion))
         return self
@@ -51,15 +72,24 @@ class Product:
         name: {}<br>'''.format(self.productId, self.name)+"<br>".join(str(opinion) for opinion in self.opinions)
 
     def todict(self):
+        return self.productsTodict() | {"opinions": self.opinionsTodictList}
+
+    def productsTodict(self):
         return {
             "productId": self.productId,
             "name": self.name,
-            "opinions": [opinion.todict() for opinion in self.opinions]
+            "averageScore": self.averageScore,
+            "opinionsCount": self.opinionsCount,
+            "prosCount": self.prosCount,
+            "consCount": self.consCount
         }
 
+    def opinionsTodictList(self):
+        return [opinion.todict() for opinion in self.opinions]
+
     def opinionsToDataFrame(self):
-        opinions = pd.DataFrame.from_records(
-            [opinion.todict() for opinion in self.opinions])
-        # opinions = pd.json_normalize([opinion.toDict() for opinion in self.opinions])
+        #opinions = pd.DataFrame.from_records(
+            #[opinion.todict() for opinion in self.opinions])
+        opinions = pd.json_normalize([opinion.todict() for opinion in self.opinions])
         return opinions
 

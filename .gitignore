@@ -249,3 +249,4 @@ dmypy.json
 
 # database
 app/opinions
+app/prducts
