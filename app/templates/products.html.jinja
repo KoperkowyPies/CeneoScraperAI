@@ -7,10 +7,10 @@
         <li class="list-group-item">
             <a href="{{url_for('product', productId=product['productId'])}}">{{product['name']}}</a>
             <p class="list-group-item">
-                <span class="badge-pill bg-info badge-secondary">{{product['opinionsCount']}}</span>
-                <span class="badge badge-pill badge-dark">{{product['average score']}}</span>
-                <span class="badge badge-pill badge-success">{{product['prosCount']}}</span>
-                <span class="badge badge-pill badge-info">{{product['consCount']}}</span>
+                <span class="badge rounded-pill bg-info badge-secondary">{{product['opinionsCount']}}</span>
+                <span class="badge rounded-pill bg-danger">{{product['averageScore']}}</span>
+                <span class="badge rounded-pill bg-success">{{product['prosCount']}}</span>
+                <span class="badge rounded-pill bg-info">{{product['consCount']}}</span>
         </li>
     {% endfor %}
     </ul>
