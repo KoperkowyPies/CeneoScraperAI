@@ -37,13 +37,13 @@ def product(productId):
 
 @app.route('/products')
 def products():
-    productsList = [x.split(".")[0] for x in listdir("app/opinions")]
-    productsTodict = []
+    productsList = [x.split(".")[0] for x in  listdir("app/products")]
+    productsDictsList = []
     for product in productsList:
         with open("app/products/{}.json".format(product), "r", encoding="UTF-8") as jf:
-            productsTodict = json.load(jf)
-    products = pd.json_normalize(productsTodict)
-    return render_template('products.html.jinja', products=productsTodict)
+            productsDictsList.append(json.load(jf))
+    # products = pd.json_normalize(productsDictsList)
+    return render_template('products.html.jinja', products=productsDictsList)
 
 @app.route('/author')
 def author():
